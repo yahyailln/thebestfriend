@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ذكرياتنا الجميلة ❤️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ffe6eb 0%, #ffd1dc 50%, #ffb6c1 100%);
+      font-family: 'Amiri', serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* تساقط الورد فـ الخلفية */
+    .flower-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .falling-flower {
+      position: absolute;
+      font-size: 24px;
+      animation: fall linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg);
+        opacity: 0.2;
+      }
+    }
+
+    /* شاشة الكود السري */
+    #lock-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 240, 243, 0.96);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      transition: all 0.8s ease-in-out;
+    }
+
+    .lock-box {
+      background: #ffffff;
+      padding: 35px 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2);
+      text-align: center;
+      max-width: 340px;
+      width: 90%;
+      border: 2px solid #ffccd5;
+    }
+
+    .lock-box h2 {
+      font-family: 'Reem Kufi', sans-serif;
+      color: #d63384;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .lock-box p {
+      color: #6c757d;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .pin-input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.3rem;
+      text-align: center;
+      letter-spacing: 4px;
+      border: 2px solid #ff85a1;
+      border-radius: 12px;
+      outline: none;
+      color: #d63384;
+      margin-bottom: 20px;
+    }
+
+    .unlock-btn {
+      background: linear-gradient(45deg, #ff4d6d, #ff758f);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Reem Kufi', sans-serif;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+      transition: 0.3s;
+    }
+
+    .unlock-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* المحتوى الرئيسي */
+    #main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 550px;
+      padding: 30px 15px;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s ease-out;
+    }
+
+    /* معرض الصور المتفاعل */
+    .photo-card {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      border: 3px solid #ffb3c1;
+      text-align: center;
+      width: 100%;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 2px solid #ffe6ea;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.7);
+      border: none;
+      font-size: 1.5rem;
+      padding: 8px 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #d63384;
+      transition: 0.3s;
+      z-index: 10;
+    }
+
+    .nav-btn:hover {
+      background: #white;
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    .card-title {
+      font-family: 'Reem Kufi', sans-serif;
+      color: #c9184a;
+      font-size: 1.4rem;
+      margin-top: 15px;
+    }
+
+    /* ورقة الرسالة الطويلة */
+    .letter-box {
+      background: #fff0f3;
+      padding: 30px 25px;
+      border-radius: 15px;
+      border-right: 5px solid #ff4d6d;
+      box-shadow: 0 10px 25px rgba(214, 51, 132, 0.15);
+      width: 100%;
+      line-height: 2;
+      font-size: 1.2rem;
+      color: #4a0e17;
+      text-align: justify;
+    }
+
+    .letter-box p {
+      margin-bottom: 15px;
+    }
+
+    .signature {
+      text-align: left;
+      font-family: 'Reem Kufi', sans-serif;
+      color: #ff4d6d;
+      font-size: 1.3rem;
+      margin-top: 20px;
+    }
+
+    .error-msg {
+      color: #e63946;
+      font-size: 0.9rem;
+      margin-top: -10px;
+      margin-bottom: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- مطر الورد -->
+  <div class="flower-container" id="flowerContainer"></div>
+
+  <!-- شاشة الكود السري -->
+  <div id="lock-screen">
+    <div class="lock-box">
+      <h2>🔐 الرمز السري</h2>
+      <p>أدخلي الكود الخاص بيكِ باش تتفتح المفاجأة ❤️</p>
+      <input type="password" id="pinInput" class="pin-input" placeholder="********" maxlength="8">
+      <div id="errorMsg" class="error-msg">الرمز غير صحيح، حاولي مرة أخرى!</div>
+      <button class="unlock-btn" onclick="checkPin()">افتحي المفاجأة ✨</button>
+    </div>
+  </div>
+
+  <!-- المحتوى الرئيسي بعد فتح القفل -->
+  <div id="main-content">
+    
+    <!-- كارت معرض الصور -->
+    <div class="photo-card">
+      <div class="slider-container">
+        <button class="nav-btn prev" onclick="changeSlide(-1)">❮</button>
+        
+        <div class="slide active"><img src="img1.jpg" alt="لحظاتنا 1"></div>
+        <div class="slide"><img src="img2.jpg" alt="لحظاتنا 2"></div>
+        <div class="slide"><img src="img3.jpg" alt="لحظاتنا 3"></div>
+        <div class="slide"><img src="img4.jpg" alt="لحظاتنا 4"></div>
+        <div class="slide"><img src="img5.jpg" alt="لحظاتنا 5"></div>
+        <div class="slide"><img src="img6.jpg" alt="لحظاتنا 6"></div>
+
+        <button class="nav-btn next" onclick="changeSlide(1)">❯</button>
+      </div>
+      <div class="card-title">أجمل الأوقات والذكريات معكِ 🌹 (اضغطي الأسهم لرؤية الصور)</div>
+    </div>
+
+    <!-- الرسالة الطويلة -->
+    <div class="letter-box">
+      <p>عزيزتي ❤️،</p>
+      
+      <p>I wrote these words to you because roses alone aren't enough to express the great place you hold in my heart. From the day I met you, everything in my life became more beautiful and sweeter..</p>      
+      <p>Your laughter is the best thing that can make me happy, and having you with me is the most beautiful gift. Thank you for all the wonderful moments we share together and the laughter we exchange..</p>      
+      <p>We promise to always be by your side, to support you, and to keep that beautiful smile of yours that I love so much..</p>
+      
+      <p>أI love you so much and you mean so much to me🌸❤️.</p>
+
+      <div class="signature">yahya  💖</div>
+    </div>
+
+  </div>
+
+  <script>
+    // الرمز السري
+    const SECRET_PIN = "20080906";
+
+    // مطر الورد
+    const flowers = ['🌹', '🌸', '🌺', '🌷', '✨'];
+    const container = document.getElementById('flowerContainer');
+
+    for (let i = 0; i < 30; i++) {
+      const flower = document.createElement('div');
+      flower.className = 'falling-flower';
+      flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+      flower.style.left = Math.random() * 100 + 'vw';
+      flower.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      flower.style.animationDelay = Math.random() * 5 + 's';
+      flower.style.fontSize = (Math.random() * 15 + 18) + 'px';
+      container.appendChild(flower);
+    }
+
+    // التحقق من الرمز
+    function checkPin() {
+      const input = document.getElementById('pinInput').value;
+      const error = document.getElementById('errorMsg');
+      const lockScreen = document.getElementById('lock-screen');
+      const mainContent = document.getElementById('main-content');
+
+      if (input === SECRET_PIN) {
+        lockScreen.style.opacity = '0';
+        setTimeout(() => {
+          lockScreen.style.display = 'none';
+          mainContent.style.display = 'flex';
+          setTimeout(() => {
+            mainContent.style.opacity = '1';
+            mainContent.style.transform = 'translateY(0)';
+          }, 50);
+        }, 800);
+      } else {
+        error.style.display = 'block';
+        document.getElementById('pinInput').value = '';
+      }
+    }
+
+    // التحكم فـ معرض الصور
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function changeSlide(direction) {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + direction + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+  </script>
+</body>
+</html>
